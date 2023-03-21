@@ -37,7 +37,7 @@ MODERATION_CHANGE_TITLE_MESSAGE = ':pencil2: <b>Введите новое наз
 MODERATION_CHANGE_TITLE_MESSAGE = emojize(MODERATION_CHANGE_TITLE_MESSAGE, language='alias')
 SUCCESS_CHANGE_TITLE_MESSAGE = ':heavy_check_mark: Название музыки успешно изменено!'
 SUCCESS_CHANGE_TITLE_MESSAGE = emojize(SUCCESS_CHANGE_TITLE_MESSAGE, language='alias')
-MODERATION_CHANGE_PERFORMER_MESSAGE = ':pencil2: <b>Введите новое название музыки:</b>'
+MODERATION_CHANGE_PERFORMER_MESSAGE = ':pencil2: <b>Введите нового исполнителя музыки:</b>'
 MODERATION_CHANGE_PERFORMER_MESSAGE = emojize(MODERATION_CHANGE_PERFORMER_MESSAGE, language='alias')
 SUCCESS_CHANGE_PERFORMER_MESSAGE = ':heavy_check_mark: Исполнитель успешно изменен!'
 SUCCESS_CHANGE_PERFORMER_MESSAGE = emojize(SUCCESS_CHANGE_PERFORMER_MESSAGE, language='alias')
@@ -49,10 +49,15 @@ MODERATION_DECLINE_MESSAGE = ':pencil2: Введите причину отказ
 MODERATION_DECLINE_MESSAGE = emojize(MODERATION_DECLINE_MESSAGE, language='alias')
 SUCCESS_DECLINE_MESSAGE = ':heavy_check_mark: Вы успешно отклонили музыку!'
 SUCCESS_DECLINE_MESSAGE = emojize(SUCCESS_DECLINE_MESSAGE, language='alias')
+SUCCESS_ACCEPT_MESSAGE = ':heavy_check_mark: Вы успешно одобрили музыку!'
+SUCCESS_ACCEPT_MESSAGE = emojize(SUCCESS_ACCEPT_MESSAGE, language='alias')
 
 DECLINE_USER_MESSAGE = ':x: <b>Администратор отклонил вашу музыку\n<code>{title}</code> по причине:</b>\n' \
                        '{reason}'
 DECLINE_USER_MESSAGE = emojize(DECLINE_USER_MESSAGE, language='alias')
+ACCEPT_USER_MESSAGE = ':white_check_mark: <b>Администратор одобрил вашу музыку <code>{title}</code></b>\n' \
+                      'Теперь вы можете найти ее в каталоге/'
+ACCEPT_USER_MESSAGE = emojize(ACCEPT_USER_MESSAGE, language='alias')
 
 CANCEL_MESSAGE = ':x: Действие отменено!'
 CANCEL_MESSAGE = emojize(CANCEL_MESSAGE, language='alias')

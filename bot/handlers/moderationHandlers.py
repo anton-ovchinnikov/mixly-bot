@@ -11,7 +11,7 @@ from bot.keyboards.moderationKeyboard import get_cancel_keyboard, get_moderation
 from bot.labels.messageLabels import MODERATION_CHANGE_TITLE_MESSAGE, SUCCESS_CHANGE_TITLE_MESSAGE, \
     AUDIO_MODERATION_MESSAGE, MODERATION_CHANGE_PERFORMER_MESSAGE, SUCCESS_CHANGE_PERFORMER_MESSAGE, \
     MODERATION_CHANGE_AUDIO_FILE_MESSAGE, SUCCESS_CHANGE_AUDIO_FILE_MESSAGE, MODERATION_DECLINE_MESSAGE, \
-    SUCCESS_DECLINE_MESSAGE, DECLINE_USER_MESSAGE
+    SUCCESS_DECLINE_MESSAGE, DECLINE_USER_MESSAGE, ACCEPT_USER_MESSAGE, SUCCESS_ACCEPT_MESSAGE
 from bot.states.ModerationStates import ModerationStates
 
 router = Router()
@@ -216,3 +216,15 @@ async def decline(message: Message, database: Database, state: FSMContext, bot: 
 
     await message.answer(SUCCESS_DECLINE_MESSAGE)
     await message.delete()
+
+
+@router.callback_query(IsAdmin(), ModerationCallbackFactory.filter(F.action == Action.accept))
+async def accept_button(query: CallbackQuery, database: Database, callback_data: ModerationCallbackFactory, bot: Bot):
+    audio_id = callback_data.audio_id
+
+    audio = await database.get_audio_by_id(audio_id=audio_id)
+    audio.status = 'accepted'
+    await database.update_audio(audio)
+    await bot.send_message(chat_id=audio.added_by, text=ACCEPT_USER_MESSAGE.format(title=audio.title))
+    await query.message.answer(SUCCESS_ACCEPT_MESSAGE)
+    await query.message.delete()
