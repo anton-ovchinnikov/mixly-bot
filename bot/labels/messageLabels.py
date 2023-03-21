@@ -42,7 +42,7 @@ MODERATION_CHANGE_PERFORMER_MESSAGE = emojize(MODERATION_CHANGE_PERFORMER_MESSAG
 SUCCESS_CHANGE_PERFORMER_MESSAGE = ':heavy_check_mark: Исполнитель успешно изменен!'
 SUCCESS_CHANGE_PERFORMER_MESSAGE = emojize(SUCCESS_CHANGE_PERFORMER_MESSAGE, language='alias')
 
-CANCEL_MESSAGE = ':x: <b>Действие отменено!</b>'
+CANCEL_MESSAGE = ':x: Действие отменено!'
 CANCEL_MESSAGE = emojize(CANCEL_MESSAGE, language='alias')
 
 INDEV_MESSAGE = ':hammer: <b>В разработке!</b>'

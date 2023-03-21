@@ -104,3 +104,27 @@ async def close_button(query: CallbackQuery, callback_data: ModerationCallbackFa
     audio.status = 'pending'
     await database.update_audio(audio)
     await query.message.delete()
+
+
+@router.callback_query(IsAdmin(), ModerationCallbackFactory.filter(F.action == Action.cancel))
+async def close_button(query: CallbackQuery, callback_data: ModerationCallbackFactory, database: Database,
+                       state: FSMContext, bot: Bot):
+    chat_id = query.from_user.id
+
+    await state.clear()
+    await query.message.delete()
+
+    audio_id = callback_data.audio_id
+    audio = await database.get_audio_by_id(audio_id=audio_id)
+
+    if audio.file_id:
+        msg = await bot.send_audio(chat_id=chat_id, audio=audio.file_id)
+        await msg.edit_text(
+            AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
+            reply_markup=get_moderation_keyboard(audio_id=audio_id)
+        )
+    else:
+        await query.message.answer(
+            AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
+            reply_markup=get_moderation_keyboard(audio_id=audio_id)
+        )
