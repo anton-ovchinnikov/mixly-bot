@@ -12,7 +12,7 @@ PROFILE_MESSAGE = emojize(PROFILE_MESSAGE, language='alias')
 
 ADD_AUDIO_TITLE_MESSAGE = ':pencil2: <b>Введите название музыки:</b>'
 ADD_AUDIO_TITLE_MESSAGE = emojize(ADD_AUDIO_TITLE_MESSAGE, language='alias')
-ADD_AUDIO_PERFORMER_MESSAGE = ':pencil2: <b>Введите автора музыки:</b>'
+ADD_AUDIO_PERFORMER_MESSAGE = ':pencil2: <b>Введите исполнителя музыки:</b>'
 ADD_AUDIO_PERFORMER_MESSAGE = emojize(ADD_AUDIO_PERFORMER_MESSAGE, language='alias')
 SUCCESSFUL_ADD_AUDIO_MESSAGE = ':heavy_check_mark: <b>Вы успешно предложили музыку!</b>\n\n' \
                                'Она появится в каталоге после модерации.'
@@ -37,6 +37,10 @@ MODERATION_CHANGE_TITLE_MESSAGE = ':pencil2: <b>Введите новое наз
 MODERATION_CHANGE_TITLE_MESSAGE = emojize(MODERATION_CHANGE_TITLE_MESSAGE, language='alias')
 SUCCESS_CHANGE_TITLE_MESSAGE = ':heavy_check_mark: Название музыки успешно изменено!'
 SUCCESS_CHANGE_TITLE_MESSAGE = emojize(SUCCESS_CHANGE_TITLE_MESSAGE, language='alias')
+MODERATION_CHANGE_PERFORMER_MESSAGE = ':pencil2: <b>Введите новое название музыки:</b>'
+MODERATION_CHANGE_PERFORMER_MESSAGE = emojize(MODERATION_CHANGE_PERFORMER_MESSAGE, language='alias')
+SUCCESS_CHANGE_PERFORMER_MESSAGE = ':heavy_check_mark: Исполнитель успешно изменен!'
+SUCCESS_CHANGE_PERFORMER_MESSAGE = emojize(SUCCESS_CHANGE_PERFORMER_MESSAGE, language='alias')
 
 CANCEL_MESSAGE = ':x: <b>Действие отменено!</b>'
 CANCEL_MESSAGE = emojize(CANCEL_MESSAGE, language='alias')
