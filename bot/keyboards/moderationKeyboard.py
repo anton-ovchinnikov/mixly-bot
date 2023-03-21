@@ -10,7 +10,7 @@ def get_moderation_keyboard(audio_id: int):
     change_title = ModerationCallbackFactory(audio_id=audio_id, action=Action.change_title).pack()
     performer = ModerationCallbackFactory(audio_id=audio_id, action=Action.change_performer).pack()
     change_genre = ModerationCallbackFactory(audio_id=audio_id, action=Action.change_genre).pack()
-    add_audio_file = ModerationCallbackFactory(audio_id=audio_id, action=Action.add_audio_file).pack()
+    add_audio_file = ModerationCallbackFactory(audio_id=audio_id, action=Action.change_audio_file).pack()
     accept = ModerationCallbackFactory(audio_id=audio_id, action=Action.accept).pack()
     decline = ModerationCallbackFactory(audio_id=audio_id, action=Action.decline).pack()
     close = ModerationCallbackFactory(audio_id=audio_id, action=Action.close).pack()

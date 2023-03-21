@@ -7,7 +7,8 @@ from bot.database.Database import Database
 from bot.filters.IsAdmin import IsAdmin
 from bot.keyboards.moderationKeyboard import get_cancel_keyboard, get_moderation_keyboard
 from bot.labels.messageLabels import MODERATION_CHANGE_TITLE_MESSAGE, SUCCESS_CHANGE_TITLE_MESSAGE, \
-    AUDIO_MODERATION_MESSAGE, MODERATION_CHANGE_PERFORMER_MESSAGE, SUCCESS_CHANGE_PERFORMER_MESSAGE
+    AUDIO_MODERATION_MESSAGE, MODERATION_CHANGE_PERFORMER_MESSAGE, SUCCESS_CHANGE_PERFORMER_MESSAGE, \
+    MODERATION_CHANGE_AUDIO_FILE_MESSAGE, SUCCESS_CHANGE_AUDIO_FILE_MESSAGE
 from bot.states.ModerationStates import ModerationStates
 
 router = Router()
@@ -43,9 +44,9 @@ async def change_title(message: Message, database: Database, state: FSMContext, 
 
     await message.answer(SUCCESS_CHANGE_TITLE_MESSAGE)
     if audio.file_id:
-        msg = await bot.send_audio(chat_id=chat_id, audio=audio.file_id)
-        await msg.edit_text(
-            AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
+        await bot.send_audio(
+            chat_id=chat_id, audio=audio.file_id,
+            caption=AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
             reply_markup=get_moderation_keyboard(audio_id=audio_id)
         )
     else:
@@ -85,9 +86,9 @@ async def change_performer(message: Message, database: Database, state: FSMConte
 
     await message.answer(SUCCESS_CHANGE_PERFORMER_MESSAGE)
     if audio.file_id:
-        msg = await bot.send_audio(chat_id=chat_id, audio=audio.file_id)
-        await msg.edit_text(
-            AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
+        await bot.send_audio(
+            chat_id=chat_id, audio=audio.file_id,
+            caption=AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
             reply_markup=get_moderation_keyboard(audio_id=audio_id)
         )
     else:
@@ -118,13 +119,58 @@ async def close_button(query: CallbackQuery, callback_data: ModerationCallbackFa
     audio = await database.get_audio_by_id(audio_id=audio_id)
 
     if audio.file_id:
-        msg = await bot.send_audio(chat_id=chat_id, audio=audio.file_id)
-        await msg.edit_text(
-            AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
+        await bot.send_audio(
+            chat_id=chat_id, audio=audio.file_id,
+            caption=AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
             reply_markup=get_moderation_keyboard(audio_id=audio_id)
         )
     else:
         await query.message.answer(
             AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
+            reply_markup=get_moderation_keyboard(audio_id=audio_id)
+        )
+
+
+@router.callback_query(IsAdmin(), ModerationCallbackFactory.filter(F.action == Action.change_audio_file))
+async def change_audio_file_button(query: CallbackQuery, state: FSMContext, callback_data: ModerationCallbackFactory):
+    audio_id = callback_data.audio_id
+    msg = await query.message.answer(MODERATION_CHANGE_AUDIO_FILE_MESSAGE,
+                                     reply_markup=get_cancel_keyboard(audio_id=audio_id))
+    await state.set_state(ModerationStates.audio_file)
+    await state.set_data({
+        'audio_id': audio_id,
+        'messages_to_delete': [msg.message_id]
+    })
+    await query.message.delete()
+
+
+@router.message(IsAdmin(), ModerationStates.audio_file, F.audio)
+async def change_audio_file(message: Message, database: Database, state: FSMContext, bot: Bot):
+    chat_id = message.from_user.id
+    sdata = await state.get_data()
+
+    file_id = message.audio.file_id
+    file = await bot.get_file(file_id=file_id)
+    file_path = file.file_path
+    local_path = f'music/{file_id}.mp3'
+    await bot.download_file(file_path=file_path, destination=local_path)
+
+    audio_id = sdata['audio_id']
+    audio = await database.get_audio_by_id(audio_id=audio_id)
+    audio.file_id = file_id
+    audio.local_path = local_path
+    await database.update_audio(audio)
+
+    await state.clear()
+    messages_to_delete = sdata['messages_to_delete']
+    for msg in messages_to_delete:
+        await bot.delete_message(chat_id=chat_id, message_id=msg)
+
+    await message.answer(SUCCESS_CHANGE_AUDIO_FILE_MESSAGE)
+    await message.delete()
+    if audio.file_id:
+        await bot.send_audio(
+            chat_id=chat_id, audio=audio.file_id,
+            caption=AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
             reply_markup=get_moderation_keyboard(audio_id=audio_id)
         )

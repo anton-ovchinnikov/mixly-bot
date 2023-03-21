@@ -41,6 +41,10 @@ MODERATION_CHANGE_PERFORMER_MESSAGE = ':pencil2: <b>Введите новое н
 MODERATION_CHANGE_PERFORMER_MESSAGE = emojize(MODERATION_CHANGE_PERFORMER_MESSAGE, language='alias')
 SUCCESS_CHANGE_PERFORMER_MESSAGE = ':heavy_check_mark: Исполнитель успешно изменен!'
 SUCCESS_CHANGE_PERFORMER_MESSAGE = emojize(SUCCESS_CHANGE_PERFORMER_MESSAGE, language='alias')
+MODERATION_CHANGE_AUDIO_FILE_MESSAGE = ':musical_note: Отправьте аудио файл с музыкой:'
+MODERATION_CHANGE_AUDIO_FILE_MESSAGE = emojize(MODERATION_CHANGE_AUDIO_FILE_MESSAGE, language='alias')
+SUCCESS_CHANGE_AUDIO_FILE_MESSAGE = ':heavy_check_mark: Аудио файл успешно изменен!'
+SUCCESS_CHANGE_AUDIO_FILE_MESSAGE = emojize(SUCCESS_CHANGE_AUDIO_FILE_MESSAGE, language='alias')
 
 CANCEL_MESSAGE = ':x: Действие отменено!'
 CANCEL_MESSAGE = emojize(CANCEL_MESSAGE, language='alias')

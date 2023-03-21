@@ -30,9 +30,10 @@ async def moderation_button(query: CallbackQuery, bot: Bot, database: Database):
         audio.moderated_by = chat_id
         await database.update_audio(audio)
         if audio.file_id:
-            msg = await bot.send_audio(chat_id=chat_id, audio=audio.file_id)
-            await msg.edit_text(
-                AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
+            await bot.send_audio(
+                chat_id=chat_id, audio=audio.file_id,
+                caption=AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer,
+                                                        genre=audio.genre),
                 reply_markup=get_moderation_keyboard(audio_id=audio.id)
             )
         else:
