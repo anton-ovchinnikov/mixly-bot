@@ -5,3 +5,4 @@ class ModerationStates(StatesGroup):
     title = State()
     performer = State()
     audio_file = State()
+    decline = State()

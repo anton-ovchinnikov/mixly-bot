@@ -45,6 +45,14 @@ MODERATION_CHANGE_AUDIO_FILE_MESSAGE = ':musical_note: Отправьте ауд
 MODERATION_CHANGE_AUDIO_FILE_MESSAGE = emojize(MODERATION_CHANGE_AUDIO_FILE_MESSAGE, language='alias')
 SUCCESS_CHANGE_AUDIO_FILE_MESSAGE = ':heavy_check_mark: Аудио файл успешно изменен!'
 SUCCESS_CHANGE_AUDIO_FILE_MESSAGE = emojize(SUCCESS_CHANGE_AUDIO_FILE_MESSAGE, language='alias')
+MODERATION_DECLINE_MESSAGE = ':pencil2: Введите причину отказа:'
+MODERATION_DECLINE_MESSAGE = emojize(MODERATION_DECLINE_MESSAGE, language='alias')
+SUCCESS_DECLINE_MESSAGE = ':heavy_check_mark: Вы успешно отклонили музыку!'
+SUCCESS_DECLINE_MESSAGE = emojize(SUCCESS_DECLINE_MESSAGE, language='alias')
+
+DECLINE_USER_MESSAGE = ':x: <b>Администратор отклонил вашу музыку\n<code>{title}</code> по причине:</b>\n' \
+                       '{reason}'
+DECLINE_USER_MESSAGE = emojize(DECLINE_USER_MESSAGE, language='alias')
 
 CANCEL_MESSAGE = ':x: Действие отменено!'
 CANCEL_MESSAGE = emojize(CANCEL_MESSAGE, language='alias')

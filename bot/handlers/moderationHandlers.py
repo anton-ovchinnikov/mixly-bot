@@ -1,3 +1,5 @@
+import os.path
+
 from aiogram import Router, F, Bot
 from aiogram.fsm.context import FSMContext
 from aiogram.types import CallbackQuery, Message
@@ -8,7 +10,8 @@ from bot.filters.IsAdmin import IsAdmin
 from bot.keyboards.moderationKeyboard import get_cancel_keyboard, get_moderation_keyboard
 from bot.labels.messageLabels import MODERATION_CHANGE_TITLE_MESSAGE, SUCCESS_CHANGE_TITLE_MESSAGE, \
     AUDIO_MODERATION_MESSAGE, MODERATION_CHANGE_PERFORMER_MESSAGE, SUCCESS_CHANGE_PERFORMER_MESSAGE, \
-    MODERATION_CHANGE_AUDIO_FILE_MESSAGE, SUCCESS_CHANGE_AUDIO_FILE_MESSAGE
+    MODERATION_CHANGE_AUDIO_FILE_MESSAGE, SUCCESS_CHANGE_AUDIO_FILE_MESSAGE, MODERATION_DECLINE_MESSAGE, \
+    SUCCESS_DECLINE_MESSAGE, DECLINE_USER_MESSAGE
 from bot.states.ModerationStates import ModerationStates
 
 router = Router()
@@ -174,3 +177,42 @@ async def change_audio_file(message: Message, database: Database, state: FSMCont
             caption=AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
             reply_markup=get_moderation_keyboard(audio_id=audio_id)
         )
+
+
+@router.callback_query(IsAdmin(), ModerationCallbackFactory.filter(F.action == Action.decline))
+async def decline_button(query: CallbackQuery, state: FSMContext, callback_data: ModerationCallbackFactory):
+    audio_id = callback_data.audio_id
+    msg = await query.message.answer(MODERATION_DECLINE_MESSAGE,
+                                     reply_markup=get_cancel_keyboard(audio_id=audio_id))
+    await state.set_state(ModerationStates.decline)
+    await state.set_data({
+        'audio_id': audio_id,
+        'messages_to_delete': [msg.message_id]
+    })
+    await query.message.delete()
+
+
+@router.message(IsAdmin(), ModerationStates.decline)
+async def decline(message: Message, database: Database, state: FSMContext, bot: Bot):
+    chat_id = message.from_user.id
+    sdata = await state.get_data()
+
+    audio_id = sdata['audio_id']
+    audio = await database.get_audio_by_id(audio_id=audio_id)
+
+    await bot.send_message(chat_id=audio.added_by,
+                           text=DECLINE_USER_MESSAGE.format(title=audio.title, reason=message.text))
+
+    local_path = audio.local_path
+    if local_path and os.path.exists(local_path):
+        os.remove(local_path)
+
+    await database.delete_audio(audio_id=audio_id)
+
+    await state.clear()
+    messages_to_delete = sdata['messages_to_delete']
+    for msg in messages_to_delete:
+        await bot.delete_message(chat_id=chat_id, message_id=msg)
+
+    await message.answer(SUCCESS_DECLINE_MESSAGE)
+    await message.delete()

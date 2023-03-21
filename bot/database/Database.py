@@ -1,6 +1,6 @@
 import datetime
 
-from sqlalchemy import select
+from sqlalchemy import select, delete
 from sqlalchemy.dialects.sqlite import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 
@@ -45,4 +45,9 @@ class Database:
 
     async def update_audio(self, audio: Audio):
         self.pool.add(audio)
+        await self.pool.commit()
+
+    async def delete_audio(self, audio_id: int):
+        stmt = delete(Audio).where(Audio.id == audio_id)
+        await self.pool.execute(stmt)
         await self.pool.commit()
