@@ -3,7 +3,7 @@ from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton
 from bot.callbacks.ModerationCallbackFactory import ModerationCallbackFactory, Action
 from bot.labels.buttonLabels import MODERATION_CHANGE_TITLE_BUTTON, MODERATION_CHANGE_PERFORMER_BUTTON, \
     MODERATION_CHANGE_GENRE_BUTTON, MODERATION_ADD_AUDIO_FILE_BUTTON, MODERATION_ACCEPT_BUTTON, \
-    MODERATION_DECLINE_BUTTON, MODERATION_CLOSE_BUTTON
+    MODERATION_DECLINE_BUTTON, MODERATION_CLOSE_BUTTON, CANCEL_BUTTON
 
 
 def get_moderation_keyboard(audio_id: int):
@@ -22,6 +22,15 @@ def get_moderation_keyboard(audio_id: int):
         [InlineKeyboardButton(text=MODERATION_ACCEPT_BUTTON, callback_data=accept),
          InlineKeyboardButton(text=MODERATION_DECLINE_BUTTON, callback_data=decline)],
         [InlineKeyboardButton(text=MODERATION_CLOSE_BUTTON, callback_data=close)],
+    ]
+    markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
+    return markup
+
+
+def get_cancel_keyboard(audio_id):
+    cancel = ModerationCallbackFactory(audio_id=audio_id, action=Action.cancel).pack()
+    keyboard = [
+        [InlineKeyboardButton(text=CANCEL_BUTTON, callback_data=cancel)]
     ]
     markup = InlineKeyboardMarkup(inline_keyboard=keyboard)
     return markup

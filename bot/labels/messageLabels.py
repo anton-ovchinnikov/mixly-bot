@@ -33,6 +33,10 @@ ADMIN_MENU_MESSAGE = emojize(ADMIN_MENU_MESSAGE, language='alias')
 
 NO_AUDIO_FOR_MODERATION_NOTIFY = ':grey_exclamation: Нет музыки для модерации!'
 NO_AUDIO_FOR_MODERATION_NOTIFY = emojize(NO_AUDIO_FOR_MODERATION_NOTIFY, language='alias')
+MODERATION_CHANGE_TITLE_MESSAGE = ':pencil2: <b>Введите новое название музыки:</b>'
+MODERATION_CHANGE_TITLE_MESSAGE = emojize(MODERATION_CHANGE_TITLE_MESSAGE, language='alias')
+SUCCESS_CHANGE_TITLE_MESSAGE = ':heavy_check_mark: Название музыки успешно изменено!'
+SUCCESS_CHANGE_TITLE_MESSAGE = emojize(SUCCESS_CHANGE_TITLE_MESSAGE, language='alias')
 
 CANCEL_MESSAGE = ':x: <b>Действие отменено!</b>'
 CANCEL_MESSAGE = emojize(CANCEL_MESSAGE, language='alias')

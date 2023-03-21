@@ -11,6 +11,7 @@ class Action(str, Enum):
     accept = 'accept'
     decline = 'decline'
     close = 'close'
+    cancel = 'cancel'
 
 
 class ModerationCallbackFactory(CallbackData, prefix="moderation"):
