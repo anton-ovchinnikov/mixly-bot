@@ -23,11 +23,26 @@ class Database:
         user = await self.pool.execute(stmt)
         return user.scalar_one_or_none()
 
-    async def add_audio(self, title: str, author: str, added_by: int):
-        self.pool.add(Audio(title=title, author=author, added_by=added_by))
+    async def add_audio(self, title: str, performer: str, added_by: int):
+        self.pool.add(Audio(title=title, performer=performer, added_by=added_by))
         await self.pool.commit()
+
+    async def get_audio_by_id(self, audio_id: int):
+        stmt = select(Audio).where(Audio.id == audio_id)
+        audio = await self.pool.execute(stmt)
+        return audio.scalar_one_or_none()
 
     async def get_audio_by_title(self, title: str):
         stmt = select(Audio).where(Audio.title == title)
         audio = await self.pool.execute(stmt)
         return audio.scalar_one_or_none()
+
+    async def get_audio_for_moderation(self):
+        status = 'pending'
+        stmt = select(Audio).where(Audio.status == status)
+        audio = await self.pool.execute(stmt)
+        return audio.scalar_one_or_none()
+
+    async def update_audio(self, audio: Audio):
+        self.pool.add(audio)
+        await self.pool.commit()

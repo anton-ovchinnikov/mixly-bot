@@ -131,3 +131,6 @@ dmypy.json
 
 # Database
 *.sqlite
+
+# Audio
+*.mp3

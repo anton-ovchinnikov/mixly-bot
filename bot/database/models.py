@@ -17,7 +17,7 @@ class Audio(Base):
 
     id = Column(Integer, primary_key=True)
     title = Column(Text, nullable=False, unique=True)
-    author = Column(Text, nullable=False, unique=False)
+    performer = Column(Text, nullable=False, unique=False)
     genre = Column(Text, nullable=True)
     file_id = Column(Text, unique=True, nullable=True)
     local_path = Column(Text, unique=True, nullable=True)
