@@ -27,6 +27,11 @@ class Database:
         self.pool.add(Audio(title=title, performer=performer, added_by=added_by))
         await self.pool.commit()
 
+    async def get_audios(self):
+        stmt = select(Audio).where(Audio.status == 'accepted')
+        audios = await self.pool.execute(stmt)
+        return audios.scalars()
+
     async def get_audio_by_id(self, audio_id: int):
         stmt = select(Audio).where(Audio.id == audio_id)
         audio = await self.pool.execute(stmt)

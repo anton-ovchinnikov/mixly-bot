@@ -28,5 +28,10 @@ MODERATION_DECLINE_BUTTON = emojize(MODERATION_DECLINE_BUTTON, language='alias')
 MODERATION_CLOSE_BUTTON = ':heavy_multiplication_x: Закрыть'
 MODERATION_CLOSE_BUTTON = emojize(MODERATION_CLOSE_BUTTON, language='alias')
 
+NEXT_BUTTON = ':arrow_forward:'
+NEXT_BUTTON = emojize(NEXT_BUTTON, language='alias')
+PREV_BUTTON = ':arrow_backward:'
+PREV_BUTTON = emojize(PREV_BUTTON, language='alias')
+
 CANCEL_BUTTON = ':x: Отменить'
 CANCEL_BUTTON = emojize(CANCEL_BUTTON, language='alias')

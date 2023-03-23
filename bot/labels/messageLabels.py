@@ -10,6 +10,14 @@ PROFILE_MESSAGE = ':bust_in_silhouette: <b>Профиль</b>\n' \
                   'Дата регистрации: <code>{registered_at}</code>'
 PROFILE_MESSAGE = emojize(PROFILE_MESSAGE, language='alias')
 
+FIRST_CATALOG_MESSAGE = ':musical_note: <b>Каталог</b>\n' \
+                        f'{":heavy_minus_sign:" * 12}'
+FIRST_CATALOG_MESSAGE = emojize(FIRST_CATALOG_MESSAGE, language='alias')
+SECOND_CATALOG_MESSAGE = f'{":heavy_minus_sign:" * 12}\n\n' \
+                         'Воспользуйтесь кнопками навигации ниже.'
+SECOND_CATALOG_MESSAGE = emojize(SECOND_CATALOG_MESSAGE, language='alias')
+AUDIO_CATALOG_MESSAGE = '<b>{performer} - {title}</b>'
+
 ADD_AUDIO_TITLE_MESSAGE = ':pencil2: <b>Введите название музыки:</b>'
 ADD_AUDIO_TITLE_MESSAGE = emojize(ADD_AUDIO_TITLE_MESSAGE, language='alias')
 ADD_AUDIO_PERFORMER_MESSAGE = ':pencil2: <b>Введите исполнителя музыки:</b>'
@@ -56,7 +64,7 @@ DECLINE_USER_MESSAGE = ':x: <b>Администратор отклонил ва�
                        '{reason}'
 DECLINE_USER_MESSAGE = emojize(DECLINE_USER_MESSAGE, language='alias')
 ACCEPT_USER_MESSAGE = ':white_check_mark: <b>Администратор одобрил вашу музыку <code>{title}</code></b>\n' \
-                      'Теперь вы можете найти ее в каталоге/'
+                      'Теперь вы можете найти ее в каталоге.'
 ACCEPT_USER_MESSAGE = emojize(ACCEPT_USER_MESSAGE, language='alias')
 
 CANCEL_MESSAGE = ':x: Действие отменено!'
