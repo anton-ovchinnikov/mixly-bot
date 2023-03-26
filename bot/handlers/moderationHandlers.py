@@ -215,11 +215,31 @@ async def decline(message: Message, database: Database, state: FSMContext, bot: 
         await bot.delete_message(chat_id=chat_id, message_id=msg)
 
     await message.answer(SUCCESS_DECLINE_MESSAGE)
+
+    audio = await database.get_audio_for_moderation()
+    if audio:
+        audio.status = 'moderation'
+        audio.moderated_by = chat_id
+        await database.update_audio(audio)
+        if audio.file_id:
+            await bot.send_audio(
+                chat_id=chat_id, audio=audio.file_id,
+                caption=AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer,
+                                                        genre=audio.genre),
+                reply_markup=get_moderation_keyboard(audio_id=audio.id)
+            )
+        else:
+            await message.answer(
+                AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
+                reply_markup=get_moderation_keyboard(audio_id=audio.id)
+            )
+
     await message.delete()
 
 
 @router.callback_query(IsAdmin(), ModerationCallbackFactory.filter(F.action == Action.accept))
 async def accept_button(query: CallbackQuery, database: Database, callback_data: ModerationCallbackFactory, bot: Bot):
+    chat_id = query.from_user.id
     audio_id = callback_data.audio_id
 
     audio = await database.get_audio_by_id(audio_id=audio_id)
@@ -227,4 +247,24 @@ async def accept_button(query: CallbackQuery, database: Database, callback_data:
     await database.update_audio(audio)
     await bot.send_message(chat_id=audio.added_by, text=ACCEPT_USER_MESSAGE.format(title=audio.title))
     await query.message.answer(SUCCESS_ACCEPT_MESSAGE)
+
+    audio = await database.get_audio_for_moderation()
+    if audio:
+        audio.status = 'moderation'
+        audio.moderated_by = chat_id
+        await database.update_audio(audio)
+        if audio.file_id:
+            await bot.send_audio(
+                chat_id=chat_id, audio=audio.file_id,
+                caption=AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer,
+                                                        genre=audio.genre),
+                reply_markup=get_moderation_keyboard(audio_id=audio.id)
+            )
+        else:
+            await query.message.answer(
+                AUDIO_MODERATION_MESSAGE.format(title=audio.title, performer=audio.performer, genre=audio.genre),
+                reply_markup=get_moderation_keyboard(audio_id=audio.id)
+            )
+        await query.answer()
+
     await query.message.delete()

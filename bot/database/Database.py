@@ -28,35 +28,35 @@ class Database:
         await self.pool.commit()
 
     async def get_audios(self):
-        stmt = select(Audio).where(Audio.status == 'accepted').order_by(Audio.id.asc()).limit(10)
+        stmt = select(Audio).where(Audio.status == 'accepted').order_by(Audio.id.desc()).limit(10)
         audios = await self.pool.execute(stmt)
         return audios.scalars()
 
     async def get_audios_count(self):
-        stmt = select(Audio).where(Audio.status == 'accepted').order_by(Audio.id.asc())
+        stmt = select(Audio).where(Audio.status == 'accepted').order_by(Audio.id.desc())
         audios = await self.pool.execute(stmt)
         audios = audios.scalars()
         count = len([audio for audio in audios])
         return count
 
     async def get_offset_audios(self, offset: int):
-        stmt = select(Audio).where(Audio.status == 'accepted').order_by(Audio.id.asc()).offset(offset).limit(10)
+        stmt = select(Audio).where(Audio.status == 'accepted').order_by(Audio.id.desc()).offset(offset).limit(10)
         audios = await self.pool.execute(stmt)
         return audios.scalars()
 
     async def get_audio_by_id(self, audio_id: int):
-        stmt = select(Audio).where(Audio.id == audio_id).order_by(Audio.id.asc())
+        stmt = select(Audio).where(Audio.id == audio_id).order_by(Audio.id.desc())
         audio = await self.pool.execute(stmt)
         return audio.scalar_one_or_none()
 
     async def get_audio_by_title(self, title: str):
-        stmt = select(Audio).where(Audio.title == title).order_by(Audio.id.asc())
+        stmt = select(Audio).where(Audio.title == title).order_by(Audio.id.desc())
         audio = await self.pool.execute(stmt)
         return audio.scalar_one_or_none()
 
     async def get_audio_for_moderation(self):
         status = 'pending'
-        stmt = select(Audio).where(Audio.status == status).order_by(Audio.id.asc()).limit(1)
+        stmt = select(Audio).where(Audio.status == status).order_by(Audio.id.desc()).limit(1)
         audio = await self.pool.execute(stmt)
         return audio.scalar_one_or_none()
 
