@@ -32,6 +32,7 @@ async def catalog_button(message: Message, database: Database, bot: Bot):
             chat_id=chat_id, audio=audio.file_id,
             caption=AUDIO_CATALOG_MESSAGE.format(title=audio.title, performer=audio.performer)
         )
+
     await message.answer(text=SECOND_CATALOG_MESSAGE, reply_markup=get_catalog_keyboard())
     await message.delete()
 

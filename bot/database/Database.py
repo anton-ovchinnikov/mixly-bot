@@ -44,7 +44,7 @@ class Database:
 
     async def get_audio_for_moderation(self):
         status = 'pending'
-        stmt = select(Audio).where(Audio.status == status)
+        stmt = select(Audio).where(Audio.status == status).limit(1)
         audio = await self.pool.execute(stmt)
         return audio.scalar_one_or_none()
 
