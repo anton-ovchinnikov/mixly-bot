@@ -30,8 +30,10 @@ MODERATION_CLOSE_BUTTON = emojize(MODERATION_CLOSE_BUTTON, language='alias')
 
 NEXT_BUTTON = ':arrow_forward:'
 NEXT_BUTTON = emojize(NEXT_BUTTON, language='alias')
-PREV_BUTTON = ':arrow_backward:'
-PREV_BUTTON = emojize(PREV_BUTTON, language='alias')
+BACK_BUTTON = ':arrow_backward:'
+BACK_BUTTON = emojize(BACK_BUTTON, language='alias')
+CLOSE_BUTTON = ':x:'
+CLOSE_BUTTON = emojize(CLOSE_BUTTON, language='alias')
 
 CANCEL_BUTTON = ':x: Отменить'
 CANCEL_BUTTON = emojize(CANCEL_BUTTON, language='alias')

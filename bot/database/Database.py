@@ -28,7 +28,19 @@ class Database:
         await self.pool.commit()
 
     async def get_audios(self):
+        stmt = select(Audio).where(Audio.status == 'accepted').limit(10)
+        audios = await self.pool.execute(stmt)
+        return audios.scalars()
+
+    async def get_audios_count(self):
         stmt = select(Audio).where(Audio.status == 'accepted')
+        audios = await self.pool.execute(stmt)
+        audios = audios.scalars()
+        count = len([audio for audio in audios])
+        return count
+
+    async def get_offset_audios(self, offset: int):
+        stmt = select(Audio).where(Audio.status == 'accepted').offset(offset).limit(10)
         audios = await self.pool.execute(stmt)
         return audios.scalars()
 

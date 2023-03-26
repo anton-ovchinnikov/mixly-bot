@@ -9,7 +9,8 @@ from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 from bot.configreader import config
 from bot.database.Database import Database
 from bot.database.base import Base
-from bot.handlers import menuHandlers, profileHandlers, audioHandlers, adminHandlers, moderationHandlers
+from bot.handlers import menuHandlers, profileHandlers, audioHandlers, adminHandlers, moderationHandlers, \
+    catalogHandlers
 from bot.middlewares.DBMiddleware import DBMiddleware
 
 
@@ -41,6 +42,7 @@ async def main():
     dp.include_router(audioHandlers.router)
     dp.include_router(adminHandlers.router)
     dp.include_router(moderationHandlers.router)
+    dp.include_router(catalogHandlers.router)
 
     try:
         await dp.start_polling(bot, allowed_updates=dp.resolve_used_update_types())
