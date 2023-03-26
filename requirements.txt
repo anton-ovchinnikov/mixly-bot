@@ -3,3 +3,4 @@ emoji==2.2.0
 python-dotenv==1.0.0
 SQLAlchemy==2.0.5.post1
 aiosqlite==0.18.0
+mutagen~=1.46.0
