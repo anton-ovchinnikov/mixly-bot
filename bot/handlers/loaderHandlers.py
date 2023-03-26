@@ -3,7 +3,7 @@ import os
 from aiogram import Router, Bot
 from aiogram.filters import Command
 from aiogram.types import FSInputFile, Message
-from mutagen.id3 import ID3
+from mutagen.id3 import ID3, ID3NoHeaderError
 
 from bot.database.Database import Database
 from bot.filters.IsAdmin import IsAdmin
@@ -20,8 +20,13 @@ async def loader_cmd(message: Message, bot: Bot, database: Database):
         audio_name = filename.split('.mp3')[0]
         performer, title = audio_name.split(' - ')
 
-        audio = ID3(f'loader/{filename}')
-        audio.delete()
+        audio = None
+        try:
+            audio = ID3(f'loader/{filename}')
+            audio.delete()
+        except ID3NoHeaderError:
+            pass
+
         audio = FSInputFile(f'loader/{filename}')
 
         msg = await bot.send_audio(chat_id=message.from_user.id, audio=audio)
